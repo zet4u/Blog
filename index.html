@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>zetsu</title>
+  <meta name="description" content="وبلاگ شخصی زتسو درباره‌ی کامپیوتر، امنیت و شطرنج." />
+  <meta property="og:title" content="زتسو — یادداشت‌های مسیر امنیت" />
+  <meta property="og:description" content="هرچه در مسیر یادگیری امنیت می‌آموزم، اینجا می‌نویسم." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E0F11'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='%23C9A86A' font-family='monospace' font-weight='bold'%3Ez%3C/text%3E%3C/svg%3E" />
+
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+  <script defer src="writeups.js"></script>
+  <script defer src="assets/js/config.js"></script>
+  <script defer src="assets/js/markdown.js"></script>
+  <script defer src="assets/js/store.js"></script>
+  <script defer src="assets/js/main.js"></script>
+</head>
+<body>
+
+  <!-- ==================== هدر (فقط منو) ==================== -->
+  <header class="header">
+    <div class="container header__inner">
+      <nav class="nav">
+        <a class="nav__link nav__link--active" href="index.html">خانه</a>
+        <a class="nav__link" href="#writeups">رایت‌آپ‌ها</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==================== معرفی ==================== -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <img class="avatar" src="assets/img/profile.jpg" alt="زتسو" />
+
+        <div class="hero__body">
+          <h1 class="hero__title" data-profile-name>زتسو</h1>
+          <p class="hero__tagline" data-profile-tagline></p>
+          <p class="hero__bio" data-profile-bio></p>
+
+          <p class="hero__contact">
+            <span data-profile-contact></span>
+            <span data-socials-inline></span>
+            <span data-profile-contact-tail></span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== رایت‌آپ‌ها ==================== -->
+    <section class="section container" id="writeups">
+      <div class="section__head">
+        <h2 class="section__title">رایت‌آپ‌ها و یادداشت‌ها</h2>
+        <span class="section__hint" data-posts-count></span>
+      </div>
+
+      <div class="post-list" data-posts></div>
+    </section>
+
+  </main>
+
+  <!-- ==================== فوتر ==================== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© <span data-year></span> — <span data-profile-name>زتسو</span></span>
+      <nav class="footer__links" data-socials></nav>
+    </div>
+  </footer>
+
+</body>
+</html>

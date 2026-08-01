@@ -1,0 +1,575 @@
+/* ============================================================
+   style.css — تم تیره‌ی مینیمال و رسمی
+   کل سایت با فونت مدام؛ مونو فقط برای بلاک کد داخل نوشته‌ها.
+   ترتیب: Base → Layout → Header → Hero → Posts → Prose → Footer → Responsive
+   ============================================================ */
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+img {
+  display: block;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+.section {
+  padding-block: var(--space-12);
+}
+
+.section__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.section__title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+.section__hint {
+  font-size: var(--text-sm);
+  color: var(--text-faint);
+}
+
+/* ---------- Header ---------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(14, 15, 17, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: 600;
+  font-size: var(--text-lg);
+}
+
+.brand__mark {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+}
+
+.brand__mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.nav__link {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.nav__link:hover,
+.nav__link--active {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  padding-block: var(--space-16) var(--space-12);
+  border-bottom: 1px solid var(--border);
+}
+
+.hero__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10);
+}
+
+.avatar {
+  flex: none;
+  width: 128px;
+  height: 128px;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+  border: 1px solid var(--border-strong);
+}
+
+.hero__body {
+  min-width: 0;
+}
+
+.hero__title {
+  font-size: var(--text-3xl);
+  letter-spacing: -0.02em;
+}
+
+.hero__tagline {
+  margin-top: var(--space-1);
+  color: var(--accent);
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+
+.hero__bio {
+  margin-top: var(--space-5);
+  max-width: var(--prose-width);
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+}
+
+.hero__contact {
+  margin-top: var(--space-5);
+  color: var(--text-faint);
+  font-size: var(--text-sm);
+}
+
+.hero__contact a {
+  color: var(--accent);
+  font-weight: 500;
+  margin-inline: 2px;
+}
+
+.hero__contact a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- نوشته‌ها ---------- */
+.post-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.post {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding-block: var(--space-5);
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+
+.post:first-child {
+  padding-top: var(--space-4);
+}
+
+.post__main {
+  min-width: 0;
+}
+
+.post__title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  transition: color var(--transition);
+}
+
+.post:hover .post__title {
+  color: var(--accent);
+}
+
+.post__excerpt {
+  margin-top: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+}
+
+.post__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  color: var(--text-faint);
+  font-size: var(--text-xs);
+}
+
+.tag {
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  font-size: var(--text-xs);
+}
+
+.post__date {
+  flex: none;
+  color: var(--text-faint);
+  font-size: var(--text-sm);
+}
+
+/* حالت خالی */
+.empty {
+  padding: var(--space-12) var(--space-6);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  color: var(--text-faint);
+}
+
+.empty__title {
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.empty__text {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+/* ---------- صفحه‌ی نوشته ---------- */
+.article {
+  max-width: var(--prose-width);
+  margin-inline: auto;
+  padding-block: var(--space-12);
+}
+
+.article__title {
+  font-size: var(--text-2xl);
+}
+
+.article__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  color: var(--text-faint);
+  font-size: var(--text-sm);
+}
+
+.article__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.prose {
+  margin-top: var(--space-8);
+  color: var(--text-primary);
+}
+
+.prose > * + * {
+  margin-top: var(--space-4);
+}
+
+.prose h2 {
+  margin-top: var(--space-8);
+  font-size: var(--text-xl);
+}
+
+.prose h3 {
+  margin-top: var(--space-6);
+  font-size: var(--text-lg);
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: var(--space-6);
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li + li {
+  margin-top: var(--space-1);
+}
+
+.prose a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.prose blockquote {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-secondary);
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+.prose img {
+  max-width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.prose code {
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.code {
+  margin: 0;
+  padding: var(--space-4);
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+}
+
+.code code {
+  padding: 0;
+  background: none;
+}
+
+/* ---------- دکمه‌ها ---------- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.button:hover {
+  border-color: var(--accent);
+}
+
+.button--primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+.button--primary:hover {
+  filter: brightness(1.08);
+  background: var(--accent);
+}
+
+.button--danger {
+  color: var(--danger);
+}
+
+/* ---------- درباره‌ی من ---------- */
+.about > div p {
+  max-width: var(--prose-width);
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+}
+
+.about > div p + p {
+  margin-top: var(--space-4);
+}
+
+.about__interests {
+  margin-top: var(--space-6);
+  color: var(--text-faint);
+  font-size: var(--text-sm);
+}
+
+/* ---------- تماس ---------- */
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.contact-list__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+
+.contact-list__item:last-child {
+  border-bottom: 0;
+}
+
+.contact-list__item:hover {
+  background: var(--surface);
+}
+
+.contact-list__label {
+  font-weight: 600;
+}
+
+.contact-list__handle {
+  color: var(--text-faint);
+  font-size: var(--text-sm);
+}
+
+.contact-list__arrow {
+  margin-inline-start: auto;
+  color: var(--text-faint);
+  transition: color var(--transition), transform var(--transition);
+}
+
+.contact-list__item:hover .contact-list__arrow {
+  color: var(--accent);
+  transform: translateX(-3px);
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  border-top: 1px solid var(--border);
+  padding-block: var(--space-8);
+  color: var(--text-faint);
+  font-size: var(--text-sm);
+}
+
+.footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.footer__links {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.footer__links a:hover {
+  color: var(--accent);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  :root {
+    --text-3xl: 2rem;
+  }
+
+  .hero {
+    padding-block: var(--space-10) var(--space-8);
+  }
+
+  .hero__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+  }
+
+  .avatar {
+    width: 84px;
+    height: 84px;
+  }
+
+  .post {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

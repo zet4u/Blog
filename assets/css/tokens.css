@@ -1,0 +1,92 @@
+/* ============================================================
+   tokens.css — فونت، رنگ و مقیاس‌های پایه
+   تم تیره‌ی مینیمال و رسمی — اکسنت طلایی خاکی
+   فونت مدام روی کل سایت اعمال می‌شود.
+   ============================================================ */
+
+/* ---------- 1) فونت مدام ---------- */
+@font-face {
+  font-family: "Modam";
+  src: url("../fonts/Modam-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Modam";
+  src: url("../fonts/Modam-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Modam";
+  src: url("../fonts/Modam-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Modam";
+  src: url("../fonts/Modam-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- 2) تایپوگرافی ---------- */
+  --font-sans: "Modam", "Segoe UI", Tahoma, system-ui, sans-serif;
+  /* مونو فقط برای بلاک‌های کد داخل نوشته‌ها */
+  --font-mono: "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.3125rem;
+  --text-2xl: 1.625rem;
+  --text-3xl: 2.75rem;
+
+  /* ---------- 3) فاصله و شعاع ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+
+  --content-width: 880px;
+  --prose-width: 700px;
+
+  --transition: 0.15s ease;
+
+  /* ---------- 4) پالت تیره‌ی رسمی ---------- */
+  --canvas: #0E0F11;
+  --surface: #141619;
+  --surface-raised: #1B1E23;
+  --border: #22262C;
+  --border-strong: #32373F;
+
+  --text-primary: #EDEEF0;
+  --text-secondary: #9DA3AB;
+  --text-faint: #646B74;
+
+  /* طلایی خاکی — جدی و شیک */
+  --accent: #C9A86A;
+  --accent-ink: #171207;
+  --accent-soft: rgba(201, 168, 106, 0.12);
+
+  --tag-bg: #1C2026;
+  --tag-text: #AEB5BD;
+
+  --success: #7FB685;
+  --danger: #D97878;
+
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
