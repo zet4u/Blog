@@ -4,12 +4,17 @@
    دو لایه دارد:
    1) پایه‌ی منتشرشده: فایل writeups.js (window.WRITEUPS) —
       همان چیزی که برای همه روی سایت دیده می‌شود.
-   2) تغییرات منتشرنشده: localStorage (یا حافظه‌ی موقت اگر مرورگر
-      ذخیره‌سازی را بسته باشد) — فقط برای پیش‌نمایش همان مرورگر.
+   2) تغییرات منتشرنشده (پیش‌نویس): localStorage — فقط در همین مرورگر.
 
-   چرخه‌ی انتشار: پنل → «انتشار روی سایت» → دانلود writeups.js →
-   جایگزینی در پوشه‌ی سایت. این روش حتی با ذخیره‌سازیِ کاملاً بسته
-   هم کار می‌کند.
+   پیش‌نویس در یک پاکت ذخیره می‌شود:
+       { v: 3, active: true, posts: [...] }
+
+   قاعده‌ی کلیدی هماهنگ‌سازی:
+   پیش‌نویس فقط و فقط وقتی پاک می‌شود که محتوای writeups.js
+   واقعاً با آن یکی شده باشد (مقایسه‌ی امضا). دانلود کردنِ فایل
+   به تنهایی پیش‌نویس را پاک نمی‌کند — چون ممکن است کاربر هنوز
+   فایل را جایگزین نکرده باشد. این دقیقاً همان چیزی بود که قبلاً
+   باعث می‌شد نوشته‌ی حذف‌شده دوباره برگردد و نسخه‌ی تکراری بسازد.
 
    قالب هر نوشته:
    { id, title, tag, date, excerpt, body, readingTime, updatedAt }
@@ -19,6 +24,7 @@ window.Store = (function () {
   "use strict";
 
   var STORAGE_KEY = "ali-writeups";
+  var SCHEMA = 3;
 
   /* ---------- تشخیص قابلیت ذخیره‌سازی ---------- */
   function detectPersistence() {
@@ -33,43 +39,142 @@ window.Store = (function () {
   }
 
   var persistent = detectPersistence();
-  var memoryFallback = []; /* وقتی localStorage در دسترس نیست */
+  var memoryEnvelope = null; /* جایگزین وقتی localStorage بسته است */
 
   /* ---------- لایه‌ی منتشرشده (فایل) ---------- */
   function filePosts() {
-    return Array.isArray(window.WRITEUPS) ? window.WRITEUPS : [];
+    return Array.isArray(window.WRITEUPS) ? window.WRITEUPS.slice() : [];
   }
 
-  /* ---------- لایه‌ی منتشرنشده (مرورگر) ---------- */
-  function readOverlay() {
-    if (!persistent) return memoryFallback;
+  /* ---------- امضای محتوا ---------- */
+
+  /**
+   * امضای یکتای یک مجموعه نوشته.
+   * فقط شناسه و محتوای مؤثر را در نظر می‌گیرد، نه ترتیب را.
+   */
+  function signature(posts) {
+    return (Array.isArray(posts) ? posts : [])
+      .map(function (post) {
+        return [
+          post.id,
+          post.title,
+          post.tag,
+          post.date,
+          post.excerpt,
+          post.body,
+        ].join("\u0001");
+      })
+      .sort()
+      .join("\u0002");
+  }
+
+  /* ---------- پاک‌سازی ---------- */
+
+  /** حذف رکوردهای با شناسه‌ی تکراری — تازه‌ترین می‌ماند */
+  function dedupeById(posts) {
+    var seen = {};
+    var result = [];
+
+    posts.forEach(function (post) {
+      var key = String(post.id);
+      if (!(key in seen)) {
+        seen[key] = result.length;
+        result.push(post);
+        return;
+      }
+
+      var existing = result[seen[key]];
+      if ((post.updatedAt || 0) > (existing.updatedAt || 0)) {
+        result[seen[key]] = post;
+      }
+    });
+
+    return result;
+  }
+
+  /* ---------- لایه‌ی پیش‌نویس ---------- */
+
+  function rawEnvelope() {
+    if (!persistent) {
+      return memoryEnvelope || { v: SCHEMA, active: false, posts: [] };
+    }
 
     try {
       var parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      return Array.isArray(parsed) ? parsed : [];
+
+      /* قالب پاکتی */
+      if (parsed && typeof parsed === "object" && Array.isArray(parsed.posts)) {
+        return {
+          v: SCHEMA,
+          active: parsed.active !== false,
+          posts: parsed.posts,
+        };
+      }
+
+      /* قالب خیلی قدیمی: آرایه‌ی خام */
+      if (Array.isArray(parsed)) {
+        return { v: SCHEMA, active: parsed.length > 0, posts: parsed };
+      }
     } catch (error) {
-      return [];
+      /* داده‌ی خراب — نادیده گرفته می‌شود */
     }
+
+    return { v: SCHEMA, active: false, posts: [] };
   }
 
-  function writeOverlay(posts) {
+  function writeEnvelope(envelope) {
+    var payload = {
+      v: SCHEMA,
+      active: envelope.active !== false,
+      posts: dedupeById(Array.isArray(envelope.posts) ? envelope.posts : []),
+    };
+
     if (!persistent) {
-      memoryFallback = posts;
-      return;
+      memoryEnvelope = payload;
+      return true;
     }
 
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      return true;
     } catch (error) {
       persistent = false;
-      memoryFallback = posts;
+      memoryEnvelope = payload;
+      return false;
     }
   }
 
-  /** مجموعه‌ی کاری: تغییرات منتشرنشده اگر هست، وگرنه داده‌ی فایل */
+  /**
+   * پاکتِ هماهنگ‌شده.
+   * اگر محتوای پیش‌نویس دقیقاً برابر فایل باشد، یعنی جایگزینی
+   * انجام شده و دیگر نیازی به پیش‌نویس نیست — خودکار پاک می‌شود.
+   */
+  function readEnvelope() {
+    var envelope = rawEnvelope();
+    if (!envelope.active) return envelope;
+
+    if (signature(envelope.posts) === signature(filePosts())) {
+      var synced = { v: SCHEMA, active: false, posts: [] };
+      writeEnvelope(synced);
+      return synced;
+    }
+
+    return envelope;
+  }
+
+  /**
+   * مجموعه‌ی کاری.
+   * اگر پیش‌نویس فعال باشد همان ملاک است — حتی اگر خالی باشد.
+   * وگرنه داده‌ی منتشرشده‌ی فایل.
+   */
   function workingSet() {
-    var overlay = readOverlay();
-    return overlay.length ? overlay.slice() : filePosts().slice();
+    var envelope = readEnvelope();
+    return dedupeById(envelope.active ? envelope.posts.slice() : filePosts());
+  }
+
+  /** ذخیره‌ی مجموعه‌ی کاری به عنوان پیش‌نویس فعال */
+  function commit(posts) {
+    return writeEnvelope({ active: true, posts: posts });
   }
 
   /* ---------- کمک‌ابزارها ---------- */
@@ -89,12 +194,19 @@ window.Store = (function () {
     }
   }
 
+  /** متن ساده — از markdown.js اگر موجود باشد */
+  function plain(body) {
+    if (window.Markdown && window.Markdown.plainText) {
+      return window.Markdown.plainText(body);
+    }
+    return String(body || "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   /** تخمین زمان مطالعه بر اساس تعداد کلمات */
   function readingTime(body) {
-    var words = String(body || "")
-      .replace(/[#>*_`\-\]\[()]/g, " ")
-      .split(/\s+/)
-      .filter(Boolean).length;
+    var words = plain(body).split(/\s+/).filter(Boolean).length;
     var minutes = Math.max(1, Math.ceil(words / 180));
     try {
       return new Intl.NumberFormat("fa-IR").format(minutes) + " دقیقه مطالعه";
@@ -105,15 +217,9 @@ window.Store = (function () {
 
   /** خلاصه‌ی خودکار از روی متن مارک‌داون */
   function autoExcerpt(body, maxLength) {
-    var plain = String(body || "")
-      .replace(/```[\s\S]*?```/g, " ")
-      .replace(/[#>*_`\-]/g, " ")
-      .replace(/\[(.*?)\]\(.*?\)/g, "$1")
-      .replace(/\s+/g, " ")
-      .trim();
-
-    if (plain.length <= maxLength) return plain;
-    return plain.slice(0, maxLength).trim() + "…";
+    var text = plain(body);
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength).trim() + "…";
   }
 
   /* ---------- رابط عمومی ---------- */
@@ -124,7 +230,7 @@ window.Store = (function () {
 
   /** آیا تغییر منتشرنشده وجود دارد؟ */
   function hasOverlay() {
-    return readOverlay().length > 0;
+    return readEnvelope().active === true;
   }
 
   /** همه‌ی نوشته‌ها، تازه‌ترین اول */
@@ -135,17 +241,37 @@ window.Store = (function () {
   }
 
   function find(id) {
+    if (!id) return null;
     var matches = workingSet().filter(function (post) {
-      return post.id === id;
+      return String(post.id) === String(id);
     });
     return matches[0] || null;
   }
 
-  /** افزودن یا ویرایش — روی لایه‌ی منتشرنشده */
+  /**
+   * نوشته‌هایی که عنوان یکسان دارند ولی شناسه‌شان فرق دارد.
+   * برای هشدار در پنل مدیریت.
+   */
+  function duplicateTitles() {
+    var byTitle = {};
+
+    workingSet().forEach(function (post) {
+      var key = String(post.title || "").trim();
+      if (!key) return;
+      byTitle[key] = (byTitle[key] || 0) + 1;
+    });
+
+    return Object.keys(byTitle).filter(function (title) {
+      return byTitle[title] > 1;
+    });
+  }
+
+  /** افزودن یا ویرایش — روی لایه‌ی پیش‌نویس */
   function save(input) {
     var posts = workingSet();
+
     var post = {
-      id: input.id || createId(),
+      id: String(input.id || "").trim() || createId(),
       title: (input.title || "").trim() || "بدون عنوان",
       tag: (input.tag || "").trim(),
       date: (input.date || "").trim() || todayLabel(),
@@ -155,23 +281,32 @@ window.Store = (function () {
       updatedAt: Date.now(),
     };
 
-    var index = posts.findIndex(function (item) {
-      return item.id === post.id;
-    });
+    var index = -1;
+    for (var i = 0; i < posts.length; i += 1) {
+      if (String(posts[i].id) === String(post.id)) {
+        index = i;
+        break;
+      }
+    }
 
     if (index >= 0) posts[index] = post;
-    else posts.push(post);
+    else posts.unshift(post);
 
-    writeOverlay(posts);
+    commit(posts);
     return post;
   }
 
+  /** حذف — حتی اگر آخرین نوشته باشد */
   function remove(id) {
-    writeOverlay(
-      workingSet().filter(function (post) {
-        return post.id !== id;
-      })
-    );
+    var before = workingSet();
+    var after = before.filter(function (post) {
+      return String(post.id) !== String(id);
+    });
+
+    if (after.length === before.length) return false;
+
+    commit(after);
+    return true;
   }
 
   /* ---------- انتشار ---------- */
@@ -187,9 +322,28 @@ window.Store = (function () {
     );
   }
 
-  /** بعد از دانلود فایل انتشار، لایه‌ی موقت پاک می‌شود */
+  /**
+   * بعد از دانلود فایل انتشار.
+   *
+   * عمداً هیچ چیزی پاک نمی‌شود: تا وقتی کاربر writeups.js را واقعاً
+   * جایگزین نکرده، پیش‌نویس باید بماند. وگرنه حذف‌ها فراموش
+   * می‌شوند و نوشته‌ی پاک‌شده از روی فایل قدیمی برمی‌گردد.
+   *
+   * پاک‌سازی دفعه‌ی بعد که صفحه باز شود خودکار انجام می‌شود
+   * (مقایسه‌ی امضا در readEnvelope).
+   */
   function afterPublish() {
-    writeOverlay([]);
+    return readEnvelope().active === false;
+  }
+
+  /** دور ریختن تغییرات منتشرنشده و بازگشت به داده‌ی فایل */
+  function discardChanges() {
+    writeEnvelope({ active: false, posts: [] });
+  }
+
+  /** تعداد نوشته‌های فایل منتشرشده — برای نمایش در پنل */
+  function publishedCount() {
+    return filePosts().length;
   }
 
   /* ---------- پشتیبان‌گیری JSON ---------- */
@@ -215,8 +369,11 @@ window.Store = (function () {
     find: find,
     save: save,
     remove: remove,
+    duplicateTitles: duplicateTitles,
     publishText: publishText,
+    publishedCount: publishedCount,
     afterPublish: afterPublish,
+    discardChanges: discardChanges,
     exportJson: exportJson,
     importJson: importJson,
     todayLabel: todayLabel,

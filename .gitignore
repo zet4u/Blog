@@ -1,0 +1,41 @@
+# ============================================================
+#  zet3u.ir — Blog
+# ============================================================
+
+# ---------- پنل مدیریت ----------
+# پنل فقط روی سیستم شخصی اجرا می‌شود و نباید روی سایت عمومی باشد.
+admin.html
+assets/js/admin.js
+assets/css/admin.css
+
+# ---------- پشتیبان و پیش‌نویس ----------
+writeups-backup*.json
+writeups.local.js
+drafts/
+*.draft.md
+
+# ---------- سیستم‌عامل ----------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ---------- ویرایشگرها ----------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---------- موقتی ----------
+*.log
+*.tmp
+*.bak
+*.orig
+node_modules/
+.cache/
