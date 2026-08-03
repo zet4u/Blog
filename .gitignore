@@ -39,3 +39,4 @@ $RECYCLE.BIN/
 *.orig
 node_modules/
 .cache/
+assets/js/admin-projects.js

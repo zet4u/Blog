@@ -100,10 +100,67 @@
     setText("[data-posts-count]", posts.length ? posts.length + " نوشته" : "");
   }
 
+  /* ---------- پروژه‌ها ---------- */
+  function projectTemplate(project) {
+    var tags = (project.tags || [])
+      .map(function (tag) {
+        return '<span class="tag">' + escapeHtml(tag) + "</span>";
+      })
+      .join("");
+
+    var dot = project.accent
+      ? '<span class="project__dot" style="background:' +
+        escapeHtml(project.accent) +
+        '"></span>'
+      : "";
+
+    /* دکمه‌ی «اجرا» فقط وقتی می‌آید که demo داده شده باشد */
+    var demoButton = project.demo
+      ? '<a class="project__btn project__btn--primary" href="' +
+        escapeHtml(project.demo) +
+        '" target="_blank" rel="noopener">اجرای آنلاین</a>'
+      : "";
+
+    return [
+      '<article class="project">',
+      '  <h3 class="project__name">' + dot + escapeHtml(project.name) + "</h3>",
+      '  <p class="project__desc">' + escapeHtml(project.desc) + "</p>",
+      '  <div class="project__tags">' + tags + "</div>",
+      '  <div class="project__actions">',
+      "    " + demoButton,
+      '    <a class="project__btn" href="' +
+        escapeHtml(project.url) +
+        '" target="_blank" rel="noopener">مشاهده‌ی کد در گیت‌هاب ↗</a>',
+      "  </div>",
+      "</article>",
+    ].join("");
+  }
+
+  function renderProjects() {
+    var container = $("[data-projects]");
+    if (!container) return;
+
+    /* از ProjectStore خوانده می‌شود تا تغییرات منتشرنشده‌ی پنل هم دیده شود */
+    var projects = window.ProjectStore
+      ? window.ProjectStore.list()
+      : window.PROJECTS || [];
+    var section = $("#projects");
+
+    /* اگر هیچ پروژه‌ای نیست، کل بخش پنهان می‌شود */
+    if (!projects.length) {
+      if (section) section.hidden = true;
+      return;
+    }
+
+    container.innerHTML = projects.map(projectTemplate).join("");
+    setText("[data-projects-count]", projects.length + " پروژه");
+  }
+
   function init() {
     renderProfile();
     renderSocials();
     renderPosts();
+    renderProjects();
     setText("[data-year]", new Date().getFullYear());
   }
 

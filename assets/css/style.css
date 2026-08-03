@@ -711,3 +711,109 @@ img {
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================
+   پروژه‌ها
+   ============================================================ */
+
+/* خط جداکننده‌ی بالای بخش */
+.section--divided {
+  border-top: 1px solid var(--border);
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.project {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  transition: border-color var(--transition), background var(--transition),
+    transform var(--transition);
+}
+
+.project:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-raised);
+  transform: translateY(-2px);
+}
+
+.project__name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+/* نقطه‌ی رنگی زبان — مثل خود گیت‌هاب */
+.project__dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-full);
+}
+
+.project__desc {
+  flex: 1;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.9;
+}
+
+.project__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.project__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+}
+
+.project__btn {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  transition: border-color var(--transition), background var(--transition),
+    color var(--transition);
+}
+
+.project__btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* دکمه‌ی اصلی — وقتی پروژه نسخه‌ی زنده دارد */
+.project__btn--primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.project__btn--primary:hover {
+  background: transparent;
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
