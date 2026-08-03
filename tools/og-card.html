@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<title>og card</title>
+
+<!--
+  قالب تصویر کارت اشتراک‌گذاری (assets/img/og-default.jpg)
+
+  چرا HTML و نه Pillow؟
+  فونت مدام شکل‌دهی فارسی را با OpenType انجام می‌دهد و کدهای
+  «Arabic Presentation Forms» را ندارد؛ پس روش reshape کردن متن مربع
+  خالی تولید می‌کرد. مرورگر شکل‌دهی را درست انجام می‌دهد.
+
+  ساخت دوباره‌ی تصویر:
+    node tools/build-og-card.js
+-->
+
+<style>
+  @font-face {
+    font-family: "Modam";
+    src: url("../assets/fonts/Modam-Medium.ttf") format("truetype");
+    font-weight: 500;
+  }
+  @font-face {
+    font-family: "Modam";
+    src: url("../assets/fonts/Modam-Bold.ttf") format("truetype");
+    font-weight: 700;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+  }
+
+  body {
+    background: #0E0F11;
+    font-family: "Modam", sans-serif;
+    color: #EDEEF0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* نوار طلایی بالا */
+  .bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 8px;
+    background: #C9A86A;
+  }
+
+  /* هاله‌ی محو طلایی */
+  .glow {
+    position: absolute;
+    top: 40px;
+    left: 120px;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: rgba(201, 168, 106, 0.10);
+    filter: blur(90px);
+  }
+
+  .card {
+    position: relative;
+    width: 1088px;
+    height: 510px;
+    background: #141619;
+    border: 2px solid #22262C;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 56px;
+    padding: 0 72px;
+  }
+
+  .avatar {
+    width: 210px;
+    height: 210px;
+    flex: 0 0 210px;
+    border-radius: 50%;
+    border: 5px solid #C9A86A;
+    object-fit: cover;
+  }
+
+  .text { flex: 0 1 auto; min-width: 0; }
+
+  .name {
+    font-weight: 700;
+    font-size: 76px;
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+  }
+
+  .tagline {
+    margin-top: 14px;
+    font-weight: 500;
+    font-size: 38px;
+    color: #9DA3AB;
+  }
+
+  .divider {
+    width: 280px;
+    height: 2px;
+    margin: 30px 0 26px;
+    background: #32373F;
+  }
+
+  .interests {
+    font-weight: 500;
+    font-size: 32px;
+    color: #9DA3AB;
+  }
+
+  /* دامنه ــ لاتین، پس جهتش ثابت می‌ماند */
+  .domain {
+    position: absolute;
+    bottom: 40px;
+    left: 72px;
+    direction: ltr;
+    font-weight: 700;
+    font-size: 34px;
+    color: #C9A86A;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="bar"></div>
+  <div class="glow"></div>
+
+  <div class="card">
+    <img class="avatar" src="../assets/img/profile.jpg" alt="" />
+
+    <div class="text">
+      <div class="name">علی علیزاده</div>
+      <div class="tagline">یادداشت‌های مسیر امنیت</div>
+      <div class="divider"></div>
+      <div class="interests">کامپیوتر · امنیت · شطرنج</div>
+    </div>
+
+    <div class="domain">zet3u.ir</div>
+  </div>
+
+</body>
+</html>

@@ -3,18 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>پیدا نشد</title>
-  <meta name="robots" content="noindex" />
+  <title>۴۰۴ — صفحه پیدا نشد</title>
+
+  <meta name="description" content="این صفحه پیدا نشد." />
+  <meta name="robots" content="noindex, follow" />
   <meta name="theme-color" content="#0E0F11" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E0F11'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='%23C9A86A' font-family='monospace' font-weight='bold'%3Ez%3C/text%3E%3C/svg%3E" />
 
-  <link rel="stylesheet" href="/assets/css/tokens.css" />
-  <link rel="stylesheet" href="/assets/css/style.css" />
+  <!-- مسیرها مطلق‌اند، چون ۴۰۴ ممکن است از هر عمقی مثل /w/... نمایش داده شود -->
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 
   <script>
     /* اگر یک لینک رایت‌آپ مثل /w/<id>.html هنوز ساخته نشده باشد
-       (مثلاً دقایق اول بعد از پوش، قبل از پایان گیت‌هاب اکشنز)،
-       کاربر را به نسخه‌ی همیشگی‌دردسترس می‌فرستیم تا لینک خراب نباشد. */
+       (دقایق اول بعد از پوش، قبل از پایان گیت‌هاب اکشنز)، کاربر را به
+       نسخه‌ی همیشگی‌دردسترس می‌فرستیم تا لینک خراب نباشد. */
     (function () {
       var match = window.location.pathname.match(/\/w\/([A-Za-z0-9._-]+)\.html$/);
       if (match) {
@@ -23,26 +26,52 @@
     })();
   </script>
 </head>
-<body>
+<body class="page-404">
 
+  <!-- ==================== هدر ==================== -->
   <header class="header">
     <div class="container header__inner">
       <nav class="nav">
-        <a class="nav__link" href="/index.html">خانه</a>
-        <a class="nav__link" href="/index.html#writeups">رایت‌آپ‌ها</a>
-        <a class="nav__link" href="/projects.html">پروژه‌ها</a>
+        <a class="nav__link" href="index.html">خانه</a>
+        <a class="nav__link" href="index.html#writeups">رایت‌آپ‌ها</a>
+        <a class="nav__link" href="projects.html">پروژه‌ها</a>
       </nav>
     </div>
   </header>
 
   <main class="container">
-    <div class="empty" style="margin-block: var(--space-16)">
-      <p class="empty__title">این صفحه پیدا نشد</p>
-      <p class="empty__text">شاید حذف شده یا لینک اشتباه است.</p>
-      <p class="empty__text"><a class="button" href="/index.html">بازگشت به صفحه‌ی اصلی</a></p>
-    </div>
+    <section class="notfound">
+
+      <div class="notfound__mark">
+        <span class="notfound__code">404</span>
+      </div>
+
+      <h1 class="notfound__title">این صفحه پیدا نشد</h1>
+
+      <p class="notfound__text">
+        شاید آدرس را اشتباه زده باشی یا این نوشته دیگر اینجا نباشد.
+        اشکالی ندارد — از اینجا می‌توانی بقیه‌ی مطالب را ببینی.
+      </p>
+
+      <div class="notfound__actions">
+        <a class="button button--primary" href="index.html">صفحه‌ی اصلی</a>
+        <a class="button" href="index.html#writeups">فهرست رایت‌آپ‌ها</a>
+      </div>
+
+      <div class="notfound__divider"></div>
+
+      <p class="hero__contact">
+        اگه فکر می‌کنی این لینک باید کار کند، توی
+        <a href="https://t.me/zet3u" target="_blank" rel="noopener">تلگرام</a>
+        یا
+        <a href="https://twitter.com/imzet3u" target="_blank" rel="noopener">توییتر</a>
+        بهم پیام بده.
+      </p>
+
+    </section>
   </main>
 
+  <!-- ==================== فوتر ==================== -->
   <footer class="footer">
     <div class="container footer__inner">
       <span>© <span data-year></span> — علی علیزاده</span>

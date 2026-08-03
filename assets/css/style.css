@@ -820,3 +820,131 @@ img {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================
+   صفحه‌ی ۴۰۴
+   با همان توکن‌های رنگی سایت. عدد ۴۰۴ مونواسپیس و طلایی است
+   و یک هاله‌ی محو پشتش می‌نشیند تا فضا خالی به نظر نرسد.
+   ========================================================== */
+.notfound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 62vh;
+  padding-block: var(--space-16);
+}
+
+/* ظرف عدد بزرگ — برای قرار گرفتن هاله پشت آن */
+.notfound__mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin-bottom: var(--space-8);
+}
+
+/* هاله‌ی طلایی محو پشت عدد */
+.notfound__mark::before {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.notfound__code {
+  position: relative;
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(5rem, 18vw, 9rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  /* عدد لاتین است، پس جهتش را ثابت نگه می‌داریم */
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.notfound__title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.notfound__text {
+  margin-top: var(--space-3);
+  max-width: 46ch;
+  font-size: var(--text-base);
+  line-height: 1.9;
+  color: var(--text-secondary);
+}
+
+.notfound__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+
+/* خط جداکننده‌ی کوتاه پیش از لینک‌های کمکی */
+.notfound__divider {
+  width: 64px;
+  height: 1px;
+  margin-top: var(--space-10);
+  background: var(--border-strong);
+}
+
+.notfound__hint {
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text-faint);
+}
+
+.notfound__hint a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-strong);
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.notfound__hint a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .notfound {
+    min-height: 56vh;
+  }
+
+  .notfound__mark::before {
+    width: 180px;
+    height: 180px;
+  }
+
+  .notfound__actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .notfound__actions .button {
+    width: 100%;
+  }
+}
+
+/* در صفحه‌ی ۴۰۴ محتوا کوتاه است، پس فوتر را به کف صفحه می‌چسبانیم */
+.page-404 {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-404 main {
+  flex: 1 0 auto;
+}
