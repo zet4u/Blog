@@ -172,7 +172,7 @@ img {
   flex: none;
   width: 128px;
   height: 128px;
-  border-radius: var(--radius-lg);
+  border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--border-strong);
 }
