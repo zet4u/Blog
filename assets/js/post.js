@@ -12,8 +12,20 @@
     return document.querySelector(selector);
   }
 
+  /* دو حالت پشتیبانی می‌شود:
+     ۱) صفحه‌ی ساخته‌شدهی w/<id>.html که window.POST_ID دارد
+     ۲) نسخه‌ی پشتیبان post.html?id=... */
   function currentId() {
+    if (window.POST_ID) return window.POST_ID;
     return new URLSearchParams(window.location.search).get("id");
+  }
+
+  /* لینک قابل اشتراک‌گذاری: اگر canonical باشد همان را می‌دهیم،
+     چون فقط همان لینک در تلگرام و توییتر پیش‌نمایش درست می‌دهد. */
+  function shareUrl() {
+    var canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical && canonical.href) return canonical.href;
+    return window.location.href;
   }
 
   /* ---------- کپی به حافظه (با پشتیبان برای file://) ---------- */
@@ -81,7 +93,7 @@
     ].join("");
 
     $("[data-copy-link]").addEventListener("click", function (event) {
-      copyToClipboard(window.location.href, event.target);
+      copyToClipboard(shareUrl(), event.target);
     });
 
     $("[data-copy-text]").addEventListener("click", function (event) {

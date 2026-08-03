@@ -1,0 +1,53 @@
+# ============================================================
+#  ساخت خودکار صفحه‌های اشتراک‌گذاری رایت‌آپ‌ها
+#
+#  بعد از هر پوش، این ورکفلو writeups.js را می‌خواند و برای
+#  هر رایت‌آپ فایل w/<id>.html را با متاتگ اختصاصی می‌سازد.
+#  تو کاری لازم نیست انجام بدهی — فقط writeups.js را پوش کن.
+# ============================================================
+
+name: Build share pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# برای کامیت کردن صفحه‌های ساخته‌شده لازم است
+permissions:
+  contents: write
+
+# اگر چند پوش پشت سر هم آمد، فقط آخری اجرا شود
+concurrency:
+  group: share-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate share pages and sitemap
+        run: node tools/build-share-pages.js
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add w sitemap.xml
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: rebuild share pages [skip ci]"
+            git push
+          fi

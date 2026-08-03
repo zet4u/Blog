@@ -228,8 +228,11 @@ img {
   justify-content: space-between;
   gap: var(--space-8);
   padding-block: var(--space-5);
-  border-bottom: 1px solid var(--border);
   transition: background var(--transition);
+}
+
+.post:not(:last-child) {
+    border-bottom: 1px solid var(--border);
 }
 
 .post:first-child {

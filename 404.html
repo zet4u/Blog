@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>پیدا نشد</title>
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#0E0F11" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E0F11'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='%23C9A86A' font-family='monospace' font-weight='bold'%3Ez%3C/text%3E%3C/svg%3E" />
+
+  <link rel="stylesheet" href="/assets/css/tokens.css" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+
+  <script>
+    /* اگر یک لینک رایت‌آپ مثل /w/<id>.html هنوز ساخته نشده باشد
+       (مثلاً دقایق اول بعد از پوش، قبل از پایان گیت‌هاب اکشنز)،
+       کاربر را به نسخه‌ی همیشگی‌دردسترس می‌فرستیم تا لینک خراب نباشد. */
+    (function () {
+      var match = window.location.pathname.match(/\/w\/([A-Za-z0-9._-]+)\.html$/);
+      if (match) {
+        window.location.replace("/post.html?id=" + encodeURIComponent(match[1]));
+      }
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header__inner">
+      <nav class="nav">
+        <a class="nav__link" href="/index.html">خانه</a>
+        <a class="nav__link" href="/index.html#writeups">رایت‌آپ‌ها</a>
+        <a class="nav__link" href="/projects.html">پروژه‌ها</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="empty" style="margin-block: var(--space-16)">
+      <p class="empty__title">این صفحه پیدا نشد</p>
+      <p class="empty__text">شاید حذف شده یا لینک اشتباه است.</p>
+      <p class="empty__text"><a class="button" href="/index.html">بازگشت به صفحه‌ی اصلی</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© <span data-year></span> — علی علیزاده</span>
+      <a href="/index.html">بازگشت به فهرست ←</a>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelector("[data-year]").textContent = new Date().getFullYear();
+  </script>
+  <script defer src="/assets/js/analytics.js"></script>
+
+</body>
+</html>

@@ -67,7 +67,9 @@
     if (post.readingTime) meta.push("<span>" + escapeHtml(post.readingTime) + "</span>");
 
     return [
-      '<a class="post" href="post.html?id=' + encodeURIComponent(post.id) + '">',
+      /* لینک به صفحه‌ی اختصاصی رایت‌آپ (متاتگ مخصوص خودش را دارد).
+         اگر هنوز ساخته نشده باشد، 404.html خودکار به post.html?id= می‌برد. */
+      '<a class="post" href="w/' + encodeURIComponent(post.id) + '.html">',
       '  <span class="post__main">',
       '    <h3 class="post__title">' + escapeHtml(post.title) + "</h3>",
       '    <p class="post__excerpt">' + escapeHtml(post.excerpt) + "</p>",
